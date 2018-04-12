@@ -5,20 +5,24 @@ import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
-@Path("/job")
+
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-class JobResource {
-
+@Path("/job")
+class JobResource(val jobService: JobService) {
 
     @GET
-    fun get(): Response{
-        return Response.status(404).build()
+    @Path("/{jobId}")
+    fun get(@PathParam("jobId") jobId: String): Response {
+        var job: Job? = jobService.getJob(jobId)
+        return job?.let { Response.ok(job).build() } ?: Response.status(404).build()
     }
 
     @POST
-    fun create():Response{
-        return Response.created(URI("zzz")).entity(Job(id = "1234", complete = false)).build()
+    fun create(): Response {
+        val job = Job(complete = false)
+        jobService.storeJob(job)
+        return Response.created(URI("/job/${job.id}")).entity(job).build()
     }
 
 }

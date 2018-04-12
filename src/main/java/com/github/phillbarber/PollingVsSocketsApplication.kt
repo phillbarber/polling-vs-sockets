@@ -19,7 +19,7 @@ class PollingVsSocketsApplication : Application<PollingVsSocketsConfiguration>()
     }
 
     override fun run(configuration: PollingVsSocketsConfiguration, environment: Environment) {
-        environment.jersey().register(JobResource());
+        environment.jersey().register(JobResource(JobService()))
     }
 
 }
