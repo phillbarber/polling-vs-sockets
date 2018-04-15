@@ -1,4 +1,4 @@
-package com.github.phillbarber;
+package com.github.phillbarber.job;
 
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;

@@ -1,4 +1,4 @@
-package com.github.phillbarber
+package com.github.phillbarber.job
 
 import java.net.URI
 import javax.ws.rs.*

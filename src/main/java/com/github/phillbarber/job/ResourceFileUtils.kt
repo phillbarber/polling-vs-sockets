@@ -1,4 +1,4 @@
-package com.github.phillbarber
+package com.github.phillbarber.job
 
 import com.google.common.io.Resources
 import java.io.File

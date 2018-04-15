@@ -2,10 +2,6 @@ package com.github.phillbarber.job
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.github.phillbarber.Job
-import com.github.phillbarber.PollingVsSocketsApplication
-import com.github.phillbarber.PollingVsSocketsConfiguration
-import com.github.phillbarber.getFileFromClassPath
 import io.dropwizard.testing.junit.DropwizardAppRule
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
@@ -33,7 +29,7 @@ class JobAcceptanceTest {
 
 
     @Test
-    fun nonExistentJobReturns404(){
+    fun getJobReturns404WhenNonExistent(){
         var get = client.target(url+"/blah")
                 .request(MediaType.APPLICATION_JSON)
                 .get()
@@ -41,13 +37,29 @@ class JobAcceptanceTest {
     }
 
     @Test
-    fun createJob() {
+    fun createJobReturnsNonCompleteJob() {
         var response = client.target(url).request(MediaType.APPLICATION_JSON).post(null)
         var entity = response.readEntity(Job::class.java)
         assertThat(response.status, _is(201))
         assertThat(entity.id, _is(notNullValue()))
         assertThat(entity.complete, _is(false))
     }
+
+
+    @Test
+    fun createdJobCompletesNoLongerThanMaxDuration() {
+        var postResponse = client.target(url).request(MediaType.APPLICATION_JSON).post(null)
+
+        val headerString = postResponse.getHeaderString("Location")
+        val MAX_DURATION: Long = 2000
+        Thread.sleep(MAX_DURATION)
+        var getResponse = client.target(headerString).request(MediaType.APPLICATION_JSON).get()
+        var retrievedJob = getResponse.readEntity(Job::class.java)
+
+        assertThat(retrievedJob.complete, equalTo(true))
+    }
+
+
 
     @Test
     fun createdJobCanBeRetrieved(){
