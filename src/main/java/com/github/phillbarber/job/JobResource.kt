@@ -5,7 +5,6 @@ import javax.ws.rs.*
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
-
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/job")
@@ -24,5 +23,4 @@ class JobResource(val jobService: JobService) {
         jobService.storeJob(job)
         return Response.created(URI("/job/${job.id}")).entity(job).build()
     }
-
 }

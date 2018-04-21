@@ -16,7 +16,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import javax.ws.rs.client.Client
 
 
-class JobAcceptanceTest {
+class JobHTTPAcceptanceTest {
 
     val appRule: DropwizardAppRule<PollingVsSocketsConfiguration> = DropwizardAppRule(PollingVsSocketsApplication::class.java,
             getFileFromClassPath("config.yml").getAbsolutePath())

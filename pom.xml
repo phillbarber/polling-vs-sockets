@@ -39,6 +39,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-client</artifactId>
+            <version>9.4.8.v20171121</version><!--Should really use jetty.version from the dropwizard bom-->
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
