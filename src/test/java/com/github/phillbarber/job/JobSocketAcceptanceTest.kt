@@ -3,9 +3,7 @@ package com.github.phillbarber.job
 import io.dropwizard.testing.junit.DropwizardAppRule
 import org.eclipse.jetty.websocket.api.Session
 import org.eclipse.jetty.websocket.api.StatusCode
-import org.eclipse.jetty.websocket.api.WebSocketConnectionListener
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect
+import org.eclipse.jetty.websocket.api.WebSocketAdapter
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage
 import org.eclipse.jetty.websocket.api.annotations.WebSocket
 import org.junit.Test
@@ -15,10 +13,12 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
-import org.glassfish.jersey.server.spi.ContainerProvider
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.collection.IsIterableContainingInOrder.contains
 import org.junit.Rule
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Future
+import org.hamcrest.CoreMatchers.`is` as _is
 
 class JobSocketAcceptanceTest {
 
@@ -30,7 +30,7 @@ class JobSocketAcceptanceTest {
 
 
     @Test
-    fun stuff() {
+    fun stuff()  {
         /*
         NOTES
         This page was great...
@@ -43,41 +43,35 @@ class JobSocketAcceptanceTest {
          */
 
         val client = WebSocketClient();
-        val socket = SimpleEchoSocket();
-        try {
-            client.start();
+        val socket = SimpleMessageSocket();
+        client.start();
 
-            val request = ClientUpgradeRequest()
-            val uri = URI("ws://localhost:8080/ws/job")
-            client.connect(socket, uri, request)
-            println("Connecting to : $uri")
+        val request = ClientUpgradeRequest()
+        val uri = URI("ws://localhost:8080/echo")
+        client.connect(socket, uri, request)
+        println("Connecting to : $uri")
 
-            // wait for closed socket connection.
-            socket.awaitClose(5, TimeUnit.SECONDS);
-        } catch (t: Throwable) {
-            t.printStackTrace()
-        } finally {
-            try {
-                client.stop()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+        // wait for closed socket connection.
+        socket.awaitClose(5, TimeUnit.SECONDS);
+
+        assertThat(socket.messagesReceived, contains("Thanks for saying Hello"))
     }
 
     @WebSocket(maxTextMessageSize = 64 * 1024)
-    class SimpleEchoSocket : WebSocketConnectionListener {
+    class SimpleMessageSocket : WebSocketAdapter() {
         var closeLatch = CountDownLatch(1)
-        @SuppressWarnings("unused")
-        var session: Session? = null;
+
+
+        var messagesReceived = ArrayList<String>()
 
         fun awaitClose(duration: Long, unit: TimeUnit): Boolean {
             return this.closeLatch.await(duration, unit);
         }
 
         @OnWebSocketMessage
-        fun onMessage(msg: String) {
-            println("Got msg: $msg");
+        override fun onWebSocketText(msg: String) {
+            messagesReceived.add(msg)
+            println("Client here, just got msg: $msg");
         }
 
         override fun onWebSocketError(p0: Throwable?) {
@@ -86,19 +80,18 @@ class JobSocketAcceptanceTest {
 
         override fun onWebSocketClose(statusCode: Int, reason: String?) {
             println("Connection closed: $statusCode - $reason");
-            this.session = null;
+            super.onWebSocketClose(statusCode, reason)
             this.closeLatch.countDown(); // trigger latch
         }
 
         override fun onWebSocketConnect(session: Session) {
+            super.onWebSocketConnect(session)
+
             println("Got connect: ${session}")
-            this.session = session;
+
             try {
                 var fut: Future<Void>;
                 fut = session.getRemote().sendStringByFuture("Hello");
-                fut.get(2, TimeUnit.SECONDS); // wait for send to complete.
-
-                fut = session.getRemote().sendStringByFuture("Thanks for the conversation.");
                 fut.get(2, TimeUnit.SECONDS); // wait for send to complete.
 
                 session.close(StatusCode.NORMAL, "I'm done");

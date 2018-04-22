@@ -59,8 +59,6 @@ class JobHTTPAcceptanceTest {
         assertThat(retrievedJob.complete, equalTo(true))
     }
 
-
-
     @Test
     fun createdJobCanBeRetrieved(){
         var postResponse = client.target(url).request(MediaType.APPLICATION_JSON).post(null)

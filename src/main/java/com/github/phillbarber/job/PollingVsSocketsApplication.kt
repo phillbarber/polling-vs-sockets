@@ -3,6 +3,7 @@ package com.github.phillbarber.job;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.eclipse.jetty.servlet.ServletHolder
 
 class PollingVsSocketsApplication : Application<PollingVsSocketsConfiguration>() {
 
@@ -20,6 +21,7 @@ class PollingVsSocketsApplication : Application<PollingVsSocketsConfiguration>()
 
     override fun run(configuration: PollingVsSocketsConfiguration, environment: Environment) {
         environment.jersey().register(JobResource(JobService()))
+        environment.getApplicationContext().getServletHandler().addServletWithMapping(ServletHolder(MyEchoServlet()), "/echo");
     }
 
 }

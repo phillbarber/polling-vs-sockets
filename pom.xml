@@ -20,6 +20,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <dropwizard.version>1.3.1</dropwizard.version>
+        <jetty.version>9.4.8.v20171121</jetty.version>
         <hamcrest.version>1.3</hamcrest.version>
         <mainClass>com.github.phillbarber.job.PollingVsSocketsApplication</mainClass>
         <kotlin.version>1.2.31</kotlin.version>
@@ -41,7 +42,17 @@
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-client</artifactId>
-            <version>9.4.8.v20171121</version><!--Should really use jetty.version from the dropwizard bom-->
+            <version>${jetty.version}</version><!--Should really use jetty.version from the dropwizard bom-->
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-servlet</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty.websocket</groupId>
+            <artifactId>websocket-server</artifactId>
+            <version>${jetty.version}</version><!--Should really use jetty.version from the dropwizard bom-->
         </dependency>
         <dependency>
             <groupId>junit</groupId>
