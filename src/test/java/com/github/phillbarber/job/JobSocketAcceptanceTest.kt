@@ -13,10 +13,12 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.collection.IsIterableContainingInOrder.contains
+import org.junit.Ignore
 import org.junit.Rule
-import java.util.concurrent.CountDownLatch
+import rx.Single
+import rx.SingleSubscriber
 import java.util.concurrent.Future
 import org.hamcrest.CoreMatchers.`is` as _is
 
@@ -30,74 +32,52 @@ class JobSocketAcceptanceTest {
 
 
     @Test
-    fun stuff()  {
-        /*
-        NOTES
-        This page was great...
-        https://www.eclipse.org/jetty/documentation/9.3.x/jetty-websocket-client-api.html
-        ...however, for some reason the SImpleEchoSocket should (at least for my versions) implement the interface WebSocketConnectionListener which that page didn't explain
-        ..implementing that method however didn;t get me the onMessage method??
-        ..onFrame???
-        ..at this point not quite sure if client is good, so hard to know test is valid.
-        ..moving on to the server.
-         */
+    @Ignore("WIP")
+    fun jobCompletes() {
 
-        val client = WebSocketClient();
-        val socket = SimpleMessageSocket();
-        client.start();
 
         val request = ClientUpgradeRequest()
-        val uri = URI("ws://localhost:8080/echo")
+
+        val client = WebSocketClient();
+        val socket = JobClientSocket();
+        client.start();
+
+        val uri = URI("ws://localhost:8080/ws/job")
         client.connect(socket, uri, request)
-        println("Connecting to : $uri")
 
-        // wait for closed socket connection.
-        socket.awaitClose(5, TimeUnit.SECONDS);
+        socket.theJob.subscribe()
 
-        assertThat(socket.messagesReceived, contains("Thanks for saying Hello"))
+        var job = socket.theJob.timeout(5, TimeUnit.SECONDS).toBlocking().value();
+
+        println(job)
+
+//        assertThat(job.complete, _is(true))
+//        assertThat(job.id, _is(CoreMatchers.notNullValue()))
     }
 
     @WebSocket(maxTextMessageSize = 64 * 1024)
-    class SimpleMessageSocket : WebSocketAdapter() {
-        var closeLatch = CountDownLatch(1)
+    class JobClientSocket : WebSocketAdapter() {
 
+        var subscriber: SingleSubscriber<in String>? = null
 
-        var messagesReceived = ArrayList<String>()
+        var theJob: Single<String> = Single.create(Single.OnSubscribe<String> { subscriber = it; })
 
-        fun awaitClose(duration: Long, unit: TimeUnit): Boolean {
-            return this.closeLatch.await(duration, unit);
-        }
 
         @OnWebSocketMessage
         override fun onWebSocketText(msg: String) {
-            messagesReceived.add(msg)
-            println("Client here, just got msg: $msg");
+            subscriber!!.onSuccess(msg)
+            session.close(StatusCode.NORMAL, "I'm done");
         }
 
         override fun onWebSocketError(p0: Throwable?) {
-            throw RuntimeException(p0)
+            subscriber!!.onError(p0)
         }
 
         override fun onWebSocketClose(statusCode: Int, reason: String?) {
             println("Connection closed: $statusCode - $reason");
             super.onWebSocketClose(statusCode, reason)
-            this.closeLatch.countDown(); // trigger latch
         }
 
-        override fun onWebSocketConnect(session: Session) {
-            super.onWebSocketConnect(session)
 
-            println("Got connect: ${session}")
-
-            try {
-                var fut: Future<Void>;
-                fut = session.getRemote().sendStringByFuture("Hello");
-                fut.get(2, TimeUnit.SECONDS); // wait for send to complete.
-
-                session.close(StatusCode.NORMAL, "I'm done");
-            } catch (t: Throwable) {
-                t.printStackTrace();
-            }
-        }
     }
 }

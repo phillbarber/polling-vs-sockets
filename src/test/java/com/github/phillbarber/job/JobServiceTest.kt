@@ -3,6 +3,8 @@ package com.github.phillbarber.job
 import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.Assert.*
 import org.junit.Test
+import rx.Single
+import rx.Subscriber
 import rx.functions.Action1
 import java.util.concurrent.TimeUnit
 
@@ -44,5 +46,21 @@ class JobServiceTest{
 
         assertThat(completedJob, _is(notNullValue()))
         assertThat(completedJob.complete, _is(true))
+    }
+
+    @Test
+    fun name() {
+
+
+
+        val onSubscribe = Single.OnSubscribe<String>() {
+            println("FIRST")
+            it.onSuccess("dsdsd")
+        }
+
+        Single.create(onSubscribe)
+
+        var single = Single.create(onSubscribe)
+        println(single.toBlocking().value())
     }
 }
