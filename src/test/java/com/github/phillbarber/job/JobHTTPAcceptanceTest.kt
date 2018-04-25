@@ -69,7 +69,7 @@ class JobHTTPAcceptanceTest {
         var getResponse = client.target(headerString).request(MediaType.APPLICATION_JSON).get()
         var retrievedJob = getResponse.readEntity(Job::class.java)
 
-        assertThat(retrievedJob, equalTo(createdJob))
+        assertThat(retrievedJob.id, equalTo(createdJob.id))
 
     }
 

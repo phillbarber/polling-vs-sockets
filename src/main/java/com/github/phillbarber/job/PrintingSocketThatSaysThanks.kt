@@ -1,6 +1,5 @@
 package com.github.phillbarber.job
 
-import org.eclipse.jetty.websocket.api.Session
 import org.eclipse.jetty.websocket.api.WebSocketAdapter
 import java.io.IOException
 

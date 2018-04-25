@@ -32,7 +32,6 @@ class JobSocketAcceptanceTest {
 
 
     @Test
-    @Ignore("WIP")
     fun jobCompletes() {
 
 

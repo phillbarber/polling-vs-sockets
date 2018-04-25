@@ -22,6 +22,7 @@ class PollingVsSocketsApplication : Application<PollingVsSocketsConfiguration>()
     override fun run(configuration: PollingVsSocketsConfiguration, environment: Environment) {
         environment.jersey().register(JobResource(JobService()))
         environment.getApplicationContext().getServletHandler().addServletWithMapping(ServletHolder(MyEchoServlet()), "/echo");
+        environment.getApplicationContext().getServletHandler().addServletWithMapping(ServletHolder(JobServlet()), "/ws/job");
     }
 
 }
