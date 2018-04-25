@@ -1,7 +1,10 @@
 package com.github.phillbarber.job
 
+import org.hamcrest.CoreMatchers.notNullValue
 import org.junit.Assert.*
 import org.junit.Test
+import rx.functions.Action1
+import java.util.concurrent.TimeUnit
 
 import org.hamcrest.CoreMatchers.`is` as _is
 
@@ -10,7 +13,6 @@ class JobServiceTest{
     @Test
     fun canSaveAndRetrieve(){
         val jobService = JobService()
-
         jobService.storeJob(Job(id="1234"))
         var job = jobService.getJob("1234")
         assertThat(job!!.id, _is("1234"))
@@ -31,5 +33,16 @@ class JobServiceTest{
         jobService.storeJob(Job(id="1234"))
         var job = jobService.getJob("1234")
         assertThat(job!!.complete, _is(false))
+    }
+
+    @Test
+    fun storeJobReturnsObservableThatEmitsACompletedJob(){
+        val jobService = JobService()
+        var jobObservable = jobService.storeJob(Job(id = "1234"))
+
+        var completedJob :Job = jobObservable.timeout(3000, TimeUnit.MILLISECONDS).toBlocking().value()
+
+        assertThat(completedJob, _is(notNullValue()))
+        assertThat(completedJob.complete, _is(true))
     }
 }
