@@ -5,11 +5,18 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlet.ServletHolder
 
-class PollingVsSocketsApplication : Application<PollingVsSocketsConfiguration>() {
-
-    fun main(args : Array<String>) {
+fun main(args : Array<String>) {
+    if(args.size == 0){
+        PollingVsSocketsApplication().run("server");
+    }
+    else{
         PollingVsSocketsApplication().run(*args);
     }
+}
+
+class PollingVsSocketsApplication : Application<PollingVsSocketsConfiguration>() {
+
+
 
     override fun getName():String {
         return "PollingVsSockets";
