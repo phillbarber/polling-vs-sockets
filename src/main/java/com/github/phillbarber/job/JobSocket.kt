@@ -11,7 +11,10 @@ class JobSocket : WebSocketAdapter() {
     override fun onWebSocketConnect(sess: Session?) {
         super.onWebSocketConnect(sess)
         var storeJob = jobService.storeJob(Job())
-        storeJob.subscribe( Action1 { remote!!.sendString(it.toString()) })
+        storeJob.subscribe(Action1 {
+            remote!!.sendString(it.toString())
+            session.close(200, "Done")
+        })
 
     }
 

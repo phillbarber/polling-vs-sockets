@@ -49,9 +49,6 @@ class JobSocketAcceptanceTest {
         var job = socket.theJob.timeout(5, TimeUnit.SECONDS).toBlocking().value();
 
         println(job)
-
-//        assertThat(job.complete, _is(true))
-//        assertThat(job.id, _is(CoreMatchers.notNullValue()))
     }
 
     @WebSocket(maxTextMessageSize = 64 * 1024)

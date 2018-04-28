@@ -25,6 +25,7 @@ class JobService(val maxDuration: Int = 2000) {
         val expiryEpochTime: Long = currentTimeMillis1 + randomDelayNoLongerThanMax
 
         val singleJob = Observable.interval(randomDelayNoLongerThanMax, TimeUnit.MILLISECONDS).doOnNext {
+            println("Job ${job.id} is complete")
             job.complete = true
         }.take(1).toSingle().map { job }
 
