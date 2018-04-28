@@ -1,7 +1,6 @@
 package com.github.phillbarber.job
 
 import io.dropwizard.testing.junit.DropwizardAppRule
-import org.eclipse.jetty.websocket.api.Session
 import org.eclipse.jetty.websocket.api.StatusCode
 import org.eclipse.jetty.websocket.api.WebSocketAdapter
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage
@@ -13,13 +12,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
-import org.hamcrest.CoreMatchers
-import org.hamcrest.MatcherAssert.assertThat
-import org.junit.Ignore
 import org.junit.Rule
 import rx.Single
 import rx.SingleSubscriber
-import java.util.concurrent.Future
 import org.hamcrest.CoreMatchers.`is` as _is
 
 class JobSocketAcceptanceTest {

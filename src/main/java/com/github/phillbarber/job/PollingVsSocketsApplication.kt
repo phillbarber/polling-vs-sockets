@@ -5,7 +5,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlet.ServletHolder
 
-fun main(args : Array<String>) {
+fun main(args: Array<String>) {
     if(args.size == 0){
         PollingVsSocketsApplication().run("server");
     }

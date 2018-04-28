@@ -15,8 +15,5 @@ class JobSocket : WebSocketAdapter() {
             remote!!.sendString(it.toString())
             session.close(200, "Done")
         })
-
     }
-
-
 }

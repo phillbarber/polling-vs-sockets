@@ -13,11 +13,9 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
-import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.collection.IsIterableContainingInOrder.contains
 import org.junit.Rule
-import rx.Single
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Future
 import org.hamcrest.CoreMatchers.`is` as _is
