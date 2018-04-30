@@ -16,6 +16,17 @@ import org.hamcrest.CoreMatchers.equalTo
 import javax.ws.rs.client.Client
 
 
+fun jacksonJaxbJsonProvider(): JacksonJaxbJsonProvider {
+    val jacksonProvider = JacksonJaxbJsonProvider()
+    val mapper = objectMapper()
+    jacksonProvider.setMapper(mapper)
+    return jacksonProvider
+}
+
+fun objectMapper(): ObjectMapper {
+    return ObjectMapper().registerModule(KotlinModule())
+}
+
 class JobHTTPAcceptanceTest {
 
     val appRule: DropwizardAppRule<PollingVsSocketsConfiguration> = DropwizardAppRule(PollingVsSocketsApplication::class.java,
@@ -74,10 +85,8 @@ class JobHTTPAcceptanceTest {
     }
 
     private fun createClient(): Client {
-        val jacksonProvider = JacksonJaxbJsonProvider()
-        val mapper = ObjectMapper().registerModule(KotlinModule())
-        jacksonProvider.setMapper(mapper)
-        val client = ClientBuilder.newClient(ClientConfig(jacksonProvider))
-        return client
+        return ClientBuilder.newClient(ClientConfig(jacksonJaxbJsonProvider()))
     }
+
+
 }

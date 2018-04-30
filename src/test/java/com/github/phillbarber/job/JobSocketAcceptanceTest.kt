@@ -42,6 +42,7 @@ class JobSocketAcceptanceTest {
         socket.theJob.subscribe()
 
         var job = socket.theJob.timeout(5, TimeUnit.SECONDS).toBlocking().value();
+        var jacksonJaxbJsonProvider = jacksonJaxbJsonProvider()
 
         println(job)
     }
@@ -49,14 +50,14 @@ class JobSocketAcceptanceTest {
     @WebSocket(maxTextMessageSize = 64 * 1024)
     class JobClientSocket : WebSocketAdapter() {
 
-        var subscriber: SingleSubscriber<in String>? = null
+        var subscriber: SingleSubscriber<in Job>? = null
 
-        var theJob: Single<String> = Single.create(Single.OnSubscribe<String> { subscriber = it; })
+        var theJob: Single<Job> = Single.create(Single.OnSubscribe<Job> { subscriber = it; })
 
 
         @OnWebSocketMessage
         override fun onWebSocketText(msg: String) {
-            subscriber!!.onSuccess(msg)
+            subscriber!!.onSuccess( objectMapper().readValue(msg, Job::class.java))
             session.close(StatusCode.NORMAL, "I'm done");
         }
 
