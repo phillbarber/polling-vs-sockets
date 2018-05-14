@@ -8,14 +8,24 @@
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments">
-          <elementProp name="maxDurationOfJobToComplete" elementType="Argument">
-            <stringProp name="Argument.name">maxDurationOfJobToComplete</stringProp>
-            <stringProp name="Argument.value">6000</stringProp>
-            <stringProp name="Argument.metadata">=</stringProp>
-          </elementProp>
           <elementProp name="pollingDelayMs" elementType="Argument">
             <stringProp name="Argument.name">pollingDelayMs</stringProp>
-            <stringProp name="Argument.value">100</stringProp>
+            <stringProp name="Argument.value">${__P(pollingDelayMs,10)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="maxDurationOfJobToComplete" elementType="Argument">
+            <stringProp name="Argument.name">maxDurationOfJobToComplete</stringProp>
+            <stringProp name="Argument.value">${__P(maxDurationOfJobToComplete,10000)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="threads" elementType="Argument">
+            <stringProp name="Argument.name">threads</stringProp>
+            <stringProp name="Argument.value">${__P(threads,10)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="jobsPerThread" elementType="Argument">
+            <stringProp name="Argument.name">jobsPerThread</stringProp>
+            <stringProp name="Argument.value">${__P(jobsPerThread,10)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -27,9 +37,9 @@
         <stringProp name="ThreadGroup.on_sample_error">startnextloop</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller" enabled="true">
           <boolProp name="LoopController.continue_forever">false</boolProp>
-          <stringProp name="LoopController.loops">${__P(jobsPerThread,10)}</stringProp>
+          <stringProp name="LoopController.loops">${jobsPerThread}</stringProp>
         </elementProp>
-        <stringProp name="ThreadGroup.num_threads">${__P(threads,10)}</stringProp>
+        <stringProp name="ThreadGroup.num_threads">${threads}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">0</stringProp>
         <boolProp name="ThreadGroup.scheduler">false</boolProp>
         <stringProp name="ThreadGroup.duration"></stringProp>
@@ -140,7 +150,7 @@
           </CounterConfig>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Polling Delay" enabled="true">
-            <stringProp name="ConstantTimer.delay">${__P(pollingDelayMs,100)}</stringProp>
+            <stringProp name="ConstantTimer.delay">${pollingDelayMs}</stringProp>
           </ConstantTimer>
           <hashTree/>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Polling" enabled="true">
@@ -158,7 +168,7 @@
             <stringProp name="HTTPSampler.port">8080</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">/job/${jobID}/?attempt=${pollingCount}</stringProp>
+            <stringProp name="HTTPSampler.path">/job/${jobID}?attempt=${pollingCount}</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>

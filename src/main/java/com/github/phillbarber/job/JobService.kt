@@ -4,7 +4,7 @@ import rx.Observable
 import rx.Single
 import java.util.concurrent.TimeUnit
 
-class JobService(val maxDuration: Int = 6000) {
+class JobService(val maxDuration: Int = 2000) {
 
     val jobs: MutableMap<String, Job> = HashMap()
 
