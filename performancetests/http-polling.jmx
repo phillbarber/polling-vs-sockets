@@ -10,12 +10,12 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="pollingDelayMs" elementType="Argument">
             <stringProp name="Argument.name">pollingDelayMs</stringProp>
-            <stringProp name="Argument.value">${__P(pollingDelayMs,10)}</stringProp>
+            <stringProp name="Argument.value">${__P(pollingDelayMS,100)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="maxDurationOfJobToComplete" elementType="Argument">
             <stringProp name="Argument.name">maxDurationOfJobToComplete</stringProp>
-            <stringProp name="Argument.value">${__P(maxDurationOfJobToComplete,10000)}</stringProp>
+            <stringProp name="Argument.value">${__P(maxDurationOfJobToCompleteMS,10000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="threads" elementType="Argument">
@@ -150,7 +150,7 @@
           </CounterConfig>
           <hashTree/>
           <ConstantTimer guiclass="ConstantTimerGui" testclass="ConstantTimer" testname="Polling Delay" enabled="true">
-            <stringProp name="ConstantTimer.delay">${pollingDelayMs}</stringProp>
+            <stringProp name="ConstantTimer.delay">${pollingDelayMS}</stringProp>
           </ConstantTimer>
           <hashTree/>
           <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="Polling" enabled="true">
@@ -198,25 +198,6 @@
             </ResponseAssertion>
             <hashTree/>
           </hashTree>
-          <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="false">
-            <stringProp name="BeanShellAssertion.query">Integer pollingDelayMS = Integer.parseInt(vars.get(&quot;pollingDelayMs&quot;));
-Integer pollingCount = Integer.parseInt(vars.get(&quot;pollingCount&quot;));
-
-Integer maxTime = Integer.parseInt(vars.get(&quot;maxDurationOfJobToComplete&quot;));
-
-Integer currentTime = pollingCount * pollingDelayMS;
-
-if (currentTime &gt; maxTime ){
-	Failure = true;
-	SampleResult.setSuccessful(false);
-	FailureMessage = &quot;MaxTime: &quot; + maxTime + &quot; Took: &quot; + currentTime + &quot; and job still not complete&quot;;
-}
-</stringProp>
-            <stringProp name="BeanShellAssertion.filename"></stringProp>
-            <stringProp name="BeanShellAssertion.parameters"></stringProp>
-            <boolProp name="BeanShellAssertion.resetInterpreter">false</boolProp>
-          </BeanShellAssertion>
-          <hashTree/>
           <BeanShellAssertion guiclass="BeanShellAssertionGui" testclass="BeanShellAssertion" testname="BeanShell Assertion" enabled="true">
             <stringProp name="BeanShellAssertion.query">
 long startTime = Long.parseLong(vars.get(&quot;startTime&quot;));
