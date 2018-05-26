@@ -1,19 +1,19 @@
 package com.github.phillbarber.job
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.dropwizard.testing.junit.DropwizardAppRule
+import org.glassfish.jersey.client.ClientConfig
+import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
 import org.junit.Test
+import javax.ws.rs.client.Client
 import javax.ws.rs.client.ClientBuilder
 import javax.ws.rs.core.MediaType
 import org.hamcrest.CoreMatchers.`is` as _is
-import org.glassfish.jersey.client.ClientConfig
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
-import org.hamcrest.CoreMatchers.equalTo
-import javax.ws.rs.client.Client
 
 
 fun jacksonJaxbJsonProvider(): JacksonJaxbJsonProvider {
@@ -62,7 +62,7 @@ class JobHTTPAcceptanceTest {
         var postResponse = client.target(url).request(MediaType.APPLICATION_JSON).post(null)
 
         val headerString = postResponse.getHeaderString("Location")
-        val MAX_DURATION: Long = 2000
+        val MAX_DURATION: Long = 10000
         Thread.sleep(MAX_DURATION)
         var getResponse = client.target(headerString).request(MediaType.APPLICATION_JSON).get()
         var retrievedJob = getResponse.readEntity(Job::class.java)

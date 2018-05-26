@@ -2,11 +2,12 @@ package com.github.phillbarber.job
 
 import rx.Observable
 import rx.Single
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
-class JobService(val maxDuration: Int = 2000) {
+class JobService(val maxDurationInMS: Int = 10000) {
 
-    val jobs: MutableMap<String, Job> = HashMap()
+    val jobs: ConcurrentHashMap<String, Job> = ConcurrentHashMap()
 
     fun storeJob(job: Job): Single<Job> {
         jobs.put(job.id, job)
@@ -21,7 +22,7 @@ class JobService(val maxDuration: Int = 2000) {
 
         val currentTimeMillis1 = System.currentTimeMillis()
         val randomDelayNoLongerThanMax = getRandomDelayNoLongerThanMax()
-        println("Will wait for $randomDelayNoLongerThanMax")
+        println("Job: ${job.id} Delay: $randomDelayNoLongerThanMax")
         val expiryEpochTime: Long = currentTimeMillis1 + randomDelayNoLongerThanMax
 
         val singleJob = Observable.interval(randomDelayNoLongerThanMax, TimeUnit.MILLISECONDS).doOnNext {
@@ -33,7 +34,7 @@ class JobService(val maxDuration: Int = 2000) {
         return singleJob;
     }
 
-    private fun getRandomDelayNoLongerThanMax(): Long = Math.round(Math.random() * maxDuration.toLong())
+    private fun getRandomDelayNoLongerThanMax(): Long = Math.round(Math.random() * maxDurationInMS.toLong())
 
 }
 
