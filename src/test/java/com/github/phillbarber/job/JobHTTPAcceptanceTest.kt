@@ -29,6 +29,8 @@ fun objectMapper(): ObjectMapper {
 
 class JobHTTPAcceptanceTest {
 
+
+    //TODO - Make this test not take so long and ocnfigure the timeoutgi
     val appRule: DropwizardAppRule<PollingVsSocketsConfiguration> = DropwizardAppRule(PollingVsSocketsApplication::class.java,
             getFileFromClassPath("config.yml").getAbsolutePath())
 

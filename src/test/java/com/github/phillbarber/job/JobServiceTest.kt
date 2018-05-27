@@ -1,13 +1,10 @@
 package com.github.phillbarber.job
 
 import org.hamcrest.CoreMatchers.notNullValue
-import org.junit.Assert.*
+import org.junit.Assert.assertThat
 import org.junit.Test
 import rx.Single
-import rx.Subscriber
-import rx.functions.Action1
 import java.util.concurrent.TimeUnit
-
 import org.hamcrest.CoreMatchers.`is` as _is
 
 class JobServiceTest{
@@ -39,10 +36,10 @@ class JobServiceTest{
 
     @Test
     fun storeJobReturnsObservableThatEmitsACompletedJob(){
-        val jobService = JobService()
+        val jobService = JobService(1)
         var jobObservable = jobService.storeJob(Job(id = "1234"))
 
-        var completedJob :Job = jobObservable.timeout(3000, TimeUnit.MILLISECONDS).toBlocking().value()
+        var completedJob :Job = jobObservable.timeout(200, TimeUnit.MILLISECONDS).toBlocking().value()
 
         assertThat(completedJob, _is(notNullValue()))
         assertThat(completedJob.complete, _is(true))

@@ -5,20 +5,19 @@ import org.eclipse.jetty.websocket.api.StatusCode
 import org.eclipse.jetty.websocket.api.WebSocketAdapter
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage
 import org.eclipse.jetty.websocket.api.annotations.WebSocket
-import org.junit.Test
-
-import java.net.URI;
-import java.util.concurrent.TimeUnit;
-
-import org.eclipse.jetty.websocket.client.ClientUpgradeRequest;
-import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.eclipse.jetty.websocket.client.ClientUpgradeRequest
+import org.eclipse.jetty.websocket.client.WebSocketClient
 import org.junit.Rule
+import org.junit.Test
 import rx.Single
 import rx.SingleSubscriber
+import java.net.URI
+import java.util.concurrent.TimeUnit
 import org.hamcrest.CoreMatchers.`is` as _is
 
 class JobSocketAcceptanceTest {
 
+    //TODO - Make this test not take so long and ocnfigure the timeout
     val appRule: DropwizardAppRule<PollingVsSocketsConfiguration> = DropwizardAppRule(PollingVsSocketsApplication::class.java,
             getFileFromClassPath("config.yml").getAbsolutePath())
 
@@ -41,7 +40,7 @@ class JobSocketAcceptanceTest {
 
         socket.theJob.subscribe()
 
-        var job = socket.theJob.timeout(5, TimeUnit.SECONDS).toBlocking().value();
+        var job = socket.theJob.timeout(10, TimeUnit.SECONDS).toBlocking().value();
         var jacksonJaxbJsonProvider = jacksonJaxbJsonProvider()
 
         println(job)
