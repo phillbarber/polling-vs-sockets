@@ -20,7 +20,7 @@
           </elementProp>
           <elementProp name="maxDurationOfJobToCompleteMS" elementType="Argument">
             <stringProp name="Argument.name">maxDurationOfJobToCompleteMS</stringProp>
-            <stringProp name="Argument.value">${__P(maxDurationOfJobToCompleteMS,10000)}</stringProp>
+            <stringProp name="Argument.value">${__P(maxDurationOfJobToCompleteMS,11000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -36,26 +36,26 @@
         </elementProp>
         <stringProp name="ThreadGroup.num_threads">${threads}</stringProp>
         <stringProp name="ThreadGroup.ramp_time">0</stringProp>
-        <boolProp name="ThreadGroup.scheduler">false</boolProp>
-        <stringProp name="ThreadGroup.duration"></stringProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
+        <stringProp name="ThreadGroup.duration">180</stringProp>
         <stringProp name="ThreadGroup.delay"></stringProp>
       </ThreadGroup>
       <hashTree>
         <JMeter.plugins.functional.samplers.websocket.WebSocketSampler guiclass="JMeter.plugins.functional.samplers.websocket.WebSocketSamplerGui" testclass="JMeter.plugins.functional.samplers.websocket.WebSocketSampler" testname="Create Job by Socket" enabled="true">
           <stringProp name="serverAddress">localhost</stringProp>
-          <stringProp name="serverPort">8080</stringProp>
+          <stringProp name="serverPort">8090</stringProp>
           <stringProp name="implementation">RFC6455 (v13)</stringProp>
           <stringProp name="protocol">ws</stringProp>
           <stringProp name="contextPath">/ws/job</stringProp>
           <stringProp name="contentEncoding">UTF-8</stringProp>
           <stringProp name="requestPayload"></stringProp>
           <stringProp name="connectionTimeout">500</stringProp>
-          <stringProp name="responseTimeout">${maxDurationOfJobToCompleteMS}</stringProp>
+          <stringProp name="responseTimeout">10000</stringProp>
           <boolProp name="ignoreSslErrors">false</boolProp>
           <boolProp name="streamingConnection">false</boolProp>
           <stringProp name="connectionId"></stringProp>
           <stringProp name="responsePattern"></stringProp>
-          <stringProp name="closeConncectionPattern"></stringProp>
+          <stringProp name="closeConncectionPattern">\&quot;complete\&quot;:true</stringProp>
           <stringProp name="proxyAddress"></stringProp>
           <stringProp name="proxyPassword"></stringProp>
           <stringProp name="proxyPort"></stringProp>
@@ -65,7 +65,12 @@
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
         </JMeter.plugins.functional.samplers.websocket.WebSocketSampler>
-        <hashTree/>
+        <hashTree>
+          <DurationAssertion guiclass="DurationAssertionGui" testclass="DurationAssertion" testname="Duration Assertion" enabled="true">
+            <stringProp name="DurationAssertion.duration">${maxDurationOfJobToCompleteMS}</stringProp>
+          </DurationAssertion>
+          <hashTree/>
+        </hashTree>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
           <objProp>

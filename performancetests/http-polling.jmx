@@ -8,13 +8,13 @@
       <boolProp name="TestPlan.serialize_threadgroups">false</boolProp>
       <elementProp name="TestPlan.user_defined_variables" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" testname="User Defined Variables" enabled="true">
         <collectionProp name="Arguments.arguments">
-          <elementProp name="pollingDelayMs" elementType="Argument">
-            <stringProp name="Argument.name">pollingDelayMs</stringProp>
-            <stringProp name="Argument.value">${__P(pollingDelayMS,100)}</stringProp>
+          <elementProp name="pollingDelayMS" elementType="Argument">
+            <stringProp name="Argument.name">pollingDelayMS</stringProp>
+            <stringProp name="Argument.value">${__P(pollingDelayMS,1000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
-          <elementProp name="maxDurationOfJobToComplete" elementType="Argument">
-            <stringProp name="Argument.name">maxDurationOfJobToComplete</stringProp>
+          <elementProp name="maxDurationOfJobToCompleteMS" elementType="Argument">
+            <stringProp name="Argument.name">maxDurationOfJobToCompleteMS</stringProp>
             <stringProp name="Argument.value">${__P(maxDurationOfJobToCompleteMS,10000)}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
@@ -94,7 +94,7 @@
             <collectionProp name="Arguments.arguments"/>
           </elementProp>
           <stringProp name="HTTPSampler.domain">localhost</stringProp>
-          <stringProp name="HTTPSampler.port">8080</stringProp>
+          <stringProp name="HTTPSampler.port">8090</stringProp>
           <stringProp name="HTTPSampler.protocol">http</stringProp>
           <stringProp name="HTTPSampler.contentEncoding"></stringProp>
           <stringProp name="HTTPSampler.path">/job</stringProp>
@@ -165,7 +165,7 @@
               </collectionProp>
             </elementProp>
             <stringProp name="HTTPSampler.domain">localhost</stringProp>
-            <stringProp name="HTTPSampler.port">8080</stringProp>
+            <stringProp name="HTTPSampler.port">8090</stringProp>
             <stringProp name="HTTPSampler.protocol">http</stringProp>
             <stringProp name="HTTPSampler.contentEncoding"></stringProp>
             <stringProp name="HTTPSampler.path">/job/${jobID}?attempt=${pollingCount}</stringProp>
@@ -202,11 +202,11 @@
             <stringProp name="BeanShellAssertion.query">
 long startTime = Long.parseLong(vars.get(&quot;startTime&quot;));
 long currentTime = System.currentTimeMillis();
-long maxDurationOfJobToComplete = Long.parseLong(vars.get(&quot;maxDurationOfJobToComplete&quot;));
+long maxDurationOfJobToCompleteMS = Long.parseLong(vars.get(&quot;maxDurationOfJobToCompleteMS&quot;));
 
-if ( currentTime &gt; startTime + maxDurationOfJobToComplete ){
+if ( currentTime &gt; startTime + maxDurationOfJobToCompleteMS ){
 	Failure = true;
-	FailureMessage = &quot;Job: &quot; + vars.get(&quot;jobID&quot;) + &quot; was too slow! Start Time: &quot; + startTime + &quot; CurrentTime: &quot; + currentTime + &quot; MaxDurationOfJobToComplete: &quot; + maxDurationOfJobToComplete;
+	FailureMessage = &quot;Job: &quot; + vars.get(&quot;jobID&quot;) + &quot; was too slow! Start Time: &quot; + startTime + &quot; CurrentTime: &quot; + currentTime + &quot; MaxDurationOfJobToComplete: &quot; + maxDurationOfJobToCompleteMS;
 }
 </stringProp>
             <stringProp name="BeanShellAssertion.filename"></stringProp>
