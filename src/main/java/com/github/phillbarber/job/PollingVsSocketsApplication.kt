@@ -5,6 +5,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.eclipse.jetty.servlet.ServletHolder
 
+//This main method doesn't seem to get compiled in as a static method - so had to add Launcher object
 fun main(args: Array<String>) {
     if(args.size == 0){
         PollingVsSocketsApplication().run("server");
