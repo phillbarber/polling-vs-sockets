@@ -9,7 +9,7 @@ export JVM_ARGS="-Xms512m -Xmx512m"
 mkdir -p ${REPORT_DIR}
 mkdir -p ${REPORT_HTML_DIR}
 
-COMMAND="/usr/share/apache-jmeter-4.0/bin/jmeter -e -o ${REPORT_HTML_DIR} -l ${REPORT_DIR}/log -n -Jthreads=200 -JjobsPerThread=10 -JmaxDurationOfJobToCompleteMS=11000 -JpollingDelayMS=500  -t http-polling.jmx"
+COMMAND="/usr/share/apache-jmeter-4.0/bin/jmeter -e -o ${REPORT_HTML_DIR} -l ${REPORT_DIR}/log -n -Jthreads=20 -JjobsPerThread=10 -JmaxDurationOfJobToCompleteMS=11000 -JpollingDelayMS=250  -t http-polling.jmx"
 
 echo "${COMMAND}" > ${REPORT_DIR}/command.txt
 
