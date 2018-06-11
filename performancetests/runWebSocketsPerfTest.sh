@@ -9,6 +9,8 @@ export JVM_ARGS="-Xms512m -Xmx1024m"
 mkdir -p ${REPORT_DIR}
 mkdir -p ${REPORT_HTML_DIR}
 
+curl 'http://localhost:4243/containers/polling-vs-sockets/stats?stream=false' > ${REPORT_DIR}/stats-before.json
+
 COMMAND="/usr/share/apache-jmeter-4.0/bin/jmeter -e -o ${REPORT_HTML_DIR} -l ${REPORT_DIR}/log -n -Jthreads=20 -JjobsPerThread=10 -JmaxDurationOfJobToCompleteMS=11000 -t websockets.jmx"
 
 echo "${COMMAND}" > ${REPORT_DIR}/command.txt
@@ -16,3 +18,5 @@ echo "${COMMAND}" > ${REPORT_DIR}/command.txt
 echo "${COMMAND}"
 
 eval ${COMMAND}
+
+curl 'http://localhost:4243/containers/polling-vs-sockets/stats?stream=false' > ${REPORT_DIR}/stats-after.json
