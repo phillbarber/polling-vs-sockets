@@ -50,7 +50,7 @@
           <stringProp name="contentEncoding">UTF-8</stringProp>
           <stringProp name="requestPayload"></stringProp>
           <stringProp name="connectionTimeout">500</stringProp>
-          <stringProp name="responseTimeout">10000</stringProp>
+          <stringProp name="responseTimeout">${maxDurationOfJobToCompleteMS}</stringProp>
           <boolProp name="ignoreSslErrors">false</boolProp>
           <boolProp name="streamingConnection">false</boolProp>
           <stringProp name="connectionId"></stringProp>
