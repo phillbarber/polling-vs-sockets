@@ -1,11 +1,18 @@
 package com.github.phillbarber.job
 
+
+import org.slf4j.LoggerFactory
 import rx.Observable
 import rx.Single
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.TimeUnit
 
+
 class JobService(val maxDurationInMS: Int = 10000) {
+
+
+
+    val logger = LoggerFactory.getLogger(this.javaClass)
 
     val jobs: ConcurrentHashMap<String, Job> = ConcurrentHashMap()
 
@@ -22,11 +29,11 @@ class JobService(val maxDurationInMS: Int = 10000) {
 
         val currentTimeMillis1 = System.currentTimeMillis()
         val randomDelayNoLongerThanMax = getRandomDelayNoLongerThanMax()
-        println("Job: ${job.id} Delay: $randomDelayNoLongerThanMax")
+        logger.info("Job: ${job.id} Delay: $randomDelayNoLongerThanMax")
         val expiryEpochTime: Long = currentTimeMillis1 + randomDelayNoLongerThanMax
 
         val singleJob = Observable.interval(randomDelayNoLongerThanMax, TimeUnit.MILLISECONDS).doOnNext {
-            println("Job ${job.id} is complete")
+            logger.info("Job ${job.id} is complete")
             job.complete = true
         }.take(1).toSingle().map { job }
 
