@@ -29,7 +29,7 @@ class JobService(val maxDurationInMS: Int = 10000) {
 
         val currentTimeMillis1 = System.currentTimeMillis()
         val randomDelayNoLongerThanMax = getRandomDelayNoLongerThanMax()
-        logger.info("Job: ${job.id} Delay: $randomDelayNoLongerThanMax")
+        logger.info("Job: ${job.id} Delay: ${randomDelayNoLongerThanMax}ms")
         val expiryEpochTime: Long = currentTimeMillis1 + randomDelayNoLongerThanMax
 
         val singleJob = Observable.interval(randomDelayNoLongerThanMax, TimeUnit.MILLISECONDS).doOnNext {
