@@ -1,6 +1,6 @@
 # PollingVsSockets
 
-A web application and test setup to compare polling and Websockets. 
+A web application and test setup to compare HTTP Polling and Websockets. 
 
 ---
 
