@@ -13,7 +13,7 @@ class JobResource(val jobService: JobService) {
     @Path("/{jobId}")
     fun get(@PathParam("jobId") jobId: String): Response {
         var job: Job? = jobService.getJob(jobId)
-        return job?.let { Response.ok(job).build() } ?: Response.status(404).build()
+        return job?.let { Response.ok(job).build() } ?: Response.status(404).entity(null).build()
     }
 
     @POST

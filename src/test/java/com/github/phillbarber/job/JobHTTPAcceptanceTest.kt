@@ -5,8 +5,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.dropwizard.testing.junit.DropwizardAppRule
 import org.glassfish.jersey.client.ClientConfig
-import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.CoreMatchers.notNullValue
+import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -47,6 +46,7 @@ class JobHTTPAcceptanceTest {
                 .request(MediaType.APPLICATION_JSON)
                 .get()
         assertThat(get.status, _is(404))
+        assertThat(get.readEntity(String.javaClass), _is(nullValue()))
     }
 
     @Test
