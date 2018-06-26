@@ -12,12 +12,12 @@ A web application and test setup to compare HTTP Polling and Websockets.
 4. To retrieve a job via http run `curl http://localhost:8080/job/${jobID}`
 ---
 
-##Build and run in Docker 
+## Build and run in Docker 
 
 1. Run `mvn clean install; ./buildDockerImage.sh`
 2. Run `./runInDocker.sh`
 
-##Run Performance tests
+## Run Performance tests
 
 1. [Install Jmeter](https://jmeter.apache.org/download_jmeter.cgi)
 2. Install [Maciej Zaleski's JMeter-WebSocketSampler](https://github.com/maciejzaleski/JMeter-WebSocketSampler/wiki).  You can also retrieve the plugin's dependencies by running `cd performancetests; mvn dependency:copy-dependencies` which should download them into: polling-vs-sockets/performancetests/target/dependency/sd 
