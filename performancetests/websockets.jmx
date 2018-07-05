@@ -43,7 +43,7 @@
       <hashTree>
         <JMeter.plugins.functional.samplers.websocket.WebSocketSampler guiclass="JMeter.plugins.functional.samplers.websocket.WebSocketSamplerGui" testclass="JMeter.plugins.functional.samplers.websocket.WebSocketSampler" testname="Create Job by Socket" enabled="true">
           <stringProp name="serverAddress">localhost</stringProp>
-          <stringProp name="serverPort">8090</stringProp>
+          <stringProp name="serverPort">8080</stringProp>
           <stringProp name="implementation">RFC6455 (v13)</stringProp>
           <stringProp name="protocol">ws</stringProp>
           <stringProp name="contextPath">/ws/job</stringProp>
